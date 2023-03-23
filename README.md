@@ -1,5 +1,5 @@
-On host machine you will need MATLAB with several toolboxes along with toolkit for access to GPU from Docker (package requires GUI to run correctly).
-List of MATLAB toolboxes (not all might be required):
+On host machine you will need MATLAB with several toolboxes along with toolkit for access to GPU from Docker (package requires GUI to run correctly) or you can check how to install matlab inside docker as it shown [here](https://github.com/mathworks-ref-arch/matlab-dockerfile) and you can take a look on [Dockerfile code](https://github.com/mathworks-ref-arch/container-images/) by Mathworks.
+List of MATLAB toolboxes (not all might be required though):
 
     product.Bioinformatics_Toolbox
     product.Computer_Vision_Toolbox
@@ -12,6 +12,11 @@ List of MATLAB toolboxes (not all might be required):
     product.Signal_Processing_Toolbox
     product.Statistics_and_Machine_Learning_Toolbox
 
+Build an image with
+
+    $ docker build -t matlab-ptv
+
+You might need superuser rights to run docker, also you can check rootless mode.
 To run MATLAB in Docker container with GUI you need to run it as follows (see [original answer](https://www.mathworks.com/matlabcentral/answers/332224-is-it-possible-to-install-matlab-in-a-docker-image)):
 
     $ xhost +
@@ -27,5 +32,4 @@ To run MATLAB in Docker container with GUI you need to run it as follows (see [o
     -v /home/volkov/.Xauthority:/root/.Xauthority:ro \
     -v /dev/dri:/dev/dri:ro \
     -v /dev/shm:/dev/shm \
-    -v /usr/local/matlab:path_to_matlab_directory_in_host_system \
     --shm-size=512M docker-image-name
