@@ -3,7 +3,7 @@ FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND="noninteractive" TZ="UTC"
 
 RUN apt-get update
-#Dependencies for MATLAB
+#Install dependencies for MATLAB
 RUN apt-get install --no-install-recommends -y ca-certificates libasound2 libatk1.0-0 libc6 libcairo-gobject2 libcairo2 \
   libcrypt1 libcups2 libdbus-1-3 libfontconfig1 libgdk-pixbuf2.0-0 libgstreamer-plugins-base1.0-0 libgstreamer1.0-0 \
   libgtk-3-0 libnspr4 libnss3 libpam0g libpango-1.0-0 libpangocairo-1.0-0 libpangoft2-1.0-0 libpython2.7 libpython3.8 \
@@ -18,6 +18,8 @@ RUN apt-get install --no-install-recommends -y libgstreamer1.0-0 \
   gstreamer1.0-plugins-good \
   gstreamer1.0-plugins-bad \
   gstreamer1.0-plugins-ugly
+#Install mesa for hardware rendering of OpenGL
+RUN apt-get install -y --no-install-recommends libglu1-mesa-dev
 
 #Build dependencies for OpenCV
 RUN apt-get install --no-install-recommends -y build-essential cmake pkg-config git
