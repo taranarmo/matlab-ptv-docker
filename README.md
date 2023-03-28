@@ -29,10 +29,12 @@ To run MATLAB in Docker container with GUI you need to run it as follows (see [o
     -e LD_LIBRARY_PATH=/usr/lib/xorg/modules/dri/ \
     -e MATLAB_JAVA=/usr/lib/jvm/java-8-openjdk-amd64/jre \
     -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
-    -v /home/volkov/.Xauthority:/root/.Xauthority:ro \
+    -v /home/username/.Xauthority:/root/.Xauthority:ro \
     -v /dev/dri:/dev/dri:ro \
     -v /dev/shm:/dev/shm \
     --shm-size=512M docker-image-name
+
+In command above you need to replace username with your username. 
 
 # Data processing steps
 
