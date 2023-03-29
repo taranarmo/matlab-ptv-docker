@@ -38,6 +38,12 @@ In command above you need to replace username with your username.
 
 # Data processing steps
 
+## Initialization
+
+After starting up the MATLAB you need to add directories with compiled OpenCV and contrib plugins along with the PTV package to MATLAB PATH environment variable
+
+    addpath(ptv, opencv, opencv_contrib)
+
 In general case you need to do 3 processes
 
 1. System calibration
@@ -47,10 +53,10 @@ In general case you need to do 3 processes
 ## System calibration
 
 If you start work from scratch or you made changes to your camera system you need calibrate your camera system (to get rid of lens distortion, basically to make rectangular objects look rectangular on the video).
-Also you need calibration in case of any significant change of stereo camera system: changes in resolution, lenses, lens housing, camera-to-camera distance change or camera replacement (to other camera or swap cameras between left and ight positions).
+Also you need calibration in case of any significant change of stereo camera system: resolution, lenses, lens housing, camera-to-camera distance change or camera replacement (to other camera or swap cameras between left and ight positions).
 Otherwise you don't need to do it on each dataset and old calibration config can be used.
 
-For calibration you will need to determine the delay between left and right videos, see below
+For calibration you will need to determine the time lag between left and right videos, see below.
 
 ### Calibration frames extraction
 
@@ -74,4 +80,5 @@ After that convert recorded times into seconds from video start, in example belo
     lag.save('lag')
 
 ## Tracking
+
 
