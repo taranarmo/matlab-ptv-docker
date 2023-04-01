@@ -72,7 +72,7 @@ After that convert recorded times into seconds from video start, in example belo
 
 ### Calibration
 
-    PTV.calibration('./calibration_frames', 30, path_to_lag_data_file)
+    PTV.calibration('./calibration_frames', 30, 'path/to/lag/data/file')
 
 ## Delay detection
 
@@ -81,4 +81,8 @@ After that convert recorded times into seconds from video start, in example belo
 
 ## Tracking
 
-
+    kalmanSettings = struct('costOfNonAssignment', 20, 'motionModel', 'ConstantVelocity', 'initialEstimateError', [200 50], 'motionNoise', [30 25], 'measurementNoise', 20);
+    matchParticlesSettings = struct('minScore', .8, 'maxAreaRatio', 1.1, 'minAreaRatio', .9, 'subFramePadding', 15, 'searchingAreaPadding', 30, 'minDepth', 50, 'maxDepth', 400);
+    blobDetectionSettings = struct('minimumBackgroundRatio', 0.4, 'minimumBlobArea', 10, 'maximumBlobArea', 200, 'maximumCount', 600);
+    trackDetectionSettings = struct('visibilityRatio', 0.6, 'ageThreshold', 8, 'invisibleForTooLong', 20);
+    PTV.track('path/to/calibration/data', 'left_camera_videos/', 'right_camera_videos/', 'path/to/lag/data/file', mexopencvPath, blobDetectionSettings, trackDetectionSettings, kalmanSettings, matchParticlesSettings, 'videoFileExtension', 'mp4', 'startingTime', 1);
