@@ -23,7 +23,7 @@ Probably you don't need all of the toolboxes, it wasn't tested thoroughly.
 
 ## Docker
 
-Currenly Dockerfile assumes that matlab installed into `matlab` directory within repo directory, and should be edited otherwise.
+Currenly Dockerfile assumes that matlab installed into `matlab` directory within repo directory and should be edited otherwise.
 
 Build an image with
 
