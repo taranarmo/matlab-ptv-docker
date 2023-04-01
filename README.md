@@ -6,7 +6,7 @@ On host machine you will need MATLAB with several toolboxes along with toolkit f
 
 ## Matlab
 
-List of MATLAB toolboxes (not all might be required though):
+List of MATLAB toolboxes:
 
     product.Bioinformatics_Toolbox
     product.Computer_Vision_Toolbox
