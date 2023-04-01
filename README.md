@@ -66,12 +66,13 @@ For calibration you will need to determine the time lag between left and right v
 
 After that convert recorded times into seconds from video start, in example below these times recorded into array timestamps
 
+    mexopencvPath = 'path/to/mexopencv'
     timestamps = [21 26 32]
-    PTV.extractCalibrationFrames('left_camera_calibration_video.mp4', 'left_camera_calibration_video.mp4', timestamps, 'lag.mat', mexopencvPath, 'calibration_frames')
+    PTV.extractCalibrationFrames('left_camera_calibration_video.mp4', 'right_camera_calibration_video.mp4', timestamps, 'lag.mat', mexopencvPath, 'calibration_frames')
 
 ### Calibration
 
-    obj = PTV.calibration("./calibration_frames", 30)
+    PTV.calibration('./calibration_frames', 30, path_to_lag_data_file)
 
 ## Delay detection
 
