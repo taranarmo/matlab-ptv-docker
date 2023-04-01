@@ -1,4 +1,4 @@
-[MATLAB package](https://github.com/s-simoncelli/ptv) by Stefano Simoncelli packed into Docker container (to ease dependencies handling as it required OpenCV of old specific version) and with small fixes in the code. New package code can be found [here](https://github.com/taranarmo/matlab-particle-tracking-stereo-camera-setup).
+[MATLAB package](https://github.com/s-simoncelli/ptv) by Stefano Simoncelli packed into Docker container (to ease dependencies handling as it required OpenCV of old specific version) with small fixes in the code. New package code can be found [here](https://github.com/taranarmo/matlab-particle-tracking-stereo-camera-setup).
 
 # Preparation
 
