@@ -72,6 +72,9 @@ After that convert recorded times into seconds from video start, in example belo
 
 ### Calibration
 
+Calibration is done on static frames extracted from video thus actually you don't need lag data for it but in the code it is required argument.
+30 is square size on chequerboard in mm.
+
     PTV.calibration('./calibration_frames', 30, 'path/to/lag/data/file')
 
 ## Delay detection
@@ -80,6 +83,8 @@ After that convert recorded times into seconds from video start, in example belo
     lag.save('lag')
 
 ## Tracking
+
+Based on the example in the code but with added params to make it runnable
 
     kalmanSettings = struct('costOfNonAssignment', 20, 'motionModel', 'ConstantVelocity', 'initialEstimateError', [200 50], 'motionNoise', [30 25], 'measurementNoise', 20);
     matchParticlesSettings = struct('minScore', .8, 'maxAreaRatio', 1.1, 'minAreaRatio', .9, 'subFramePadding', 15, 'searchingAreaPadding', 30, 'minDepth', 50, 'maxDepth', 400);
