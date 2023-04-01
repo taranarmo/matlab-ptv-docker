@@ -3,6 +3,7 @@ FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND="noninteractive" TZ="UTC"
 
 RUN apt-get update
+
 #Install dependencies for MATLAB
 RUN apt-get install --no-install-recommends -y ca-certificates libasound2 libatk1.0-0 libc6 libcairo-gobject2 libcairo2 \
   libcrypt1 libcups2 libdbus-1-3 libfontconfig1 libgdk-pixbuf2.0-0 libgstreamer-plugins-base1.0-0 libgstreamer1.0-0 \
@@ -10,6 +11,7 @@ RUN apt-get install --no-install-recommends -y ca-certificates libasound2 libatk
   libselinux1 libsm6 libsndfile1 libtcl8.6 libuuid1 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 \
   libxext6 libxfixes3 libxft2 libxi6 libxinerama1 libxrandr2 libxrender1 libxt6 libxtst6 libxxf86vm1 locales locales-all \
   procps sudo unzip wget xkb-data zlib1g
+
 #Install all the codecs for different media files
 RUN apt-get install --no-install-recommends -y libgstreamer1.0-0 \
   gstreamer1.0-tools \
@@ -18,6 +20,7 @@ RUN apt-get install --no-install-recommends -y libgstreamer1.0-0 \
   gstreamer1.0-plugins-good \
   gstreamer1.0-plugins-bad \
   gstreamer1.0-plugins-ugly
+
 #Install mesa for hardware rendering of OpenGL
 RUN apt-get install -y --no-install-recommends libglu1-mesa-dev
 
