@@ -17,6 +17,7 @@ Build an image with
     $ docker build -t matlab-ptv
 
 You might need superuser rights to run docker, also you can check rootless mode.
+If you need to run docker with root rights run it via `sudo`.
 To run MATLAB in Docker container with GUI you need to run it as follows (see [original answer](https://www.mathworks.com/matlabcentral/answers/332224-is-it-possible-to-install-matlab-in-a-docker-image)):
 
     $ xhost +
@@ -29,12 +30,10 @@ To run MATLAB in Docker container with GUI you need to run it as follows (see [o
     -e LD_LIBRARY_PATH=/usr/lib/xorg/modules/dri/ \
     -e MATLAB_JAVA=/usr/lib/jvm/java-8-openjdk-amd64/jre \
     -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
-    -v /home/username/.Xauthority:/root/.Xauthority:ro \
+    -v ~/.Xauthority:/root/.Xauthority:ro \
     -v /dev/dri:/dev/dri:ro \
     -v /dev/shm:/dev/shm \
-    --shm-size=512M docker-image-name
-
-In command above you need to replace username with your username. 
+    --shm-size=512M docker-image-name /usr/local/matlab/bin/matlab
 
 # Data processing steps
 
