@@ -1,4 +1,11 @@
+[MATLAB package](https://github.com/s-simoncelli/ptv) by Stefano Simoncelli packed into Docker container (to ease dependencies handling as it required OpenCV of old specific version) and with small fixes in the code. New package code can be found [here](https://github.com/taranarmo/matlab-particle-tracking-stereo-camera-setup).
+
+# Preparation
+
 On host machine you will need MATLAB with several toolboxes along with toolkit for access to GPU from Docker (package requires GUI to run correctly) or you can check how to install matlab inside docker as it shown [here](https://github.com/mathworks-ref-arch/matlab-dockerfile) and you can take a look on [Dockerfile code](https://github.com/mathworks-ref-arch/container-images/) by Mathworks.
+
+## Matlab
+
 List of MATLAB toolboxes (not all might be required though):
 
     product.Bioinformatics_Toolbox
@@ -12,12 +19,18 @@ List of MATLAB toolboxes (not all might be required though):
     product.Signal_Processing_Toolbox
     product.Statistics_and_Machine_Learning_Toolbox
 
+Probably you don't need all of the toolboxes, it wasn't tested thoroughly.
+
+## Docker
+
+Currenly Dockerfile assumes that matlab installed into `matlab` directory within repo directory, and should be edited otherwise.
+
 Build an image with
 
-    $ docker build -t matlab-ptv
+    $ docker build -t matlab-ptv .
 
 You might need superuser rights to run docker, also you can check rootless mode.
-If you need to run docker with root rights run it via `sudo`.
+If you need to run docker with superuser rights run it via `sudo`.
 To run MATLAB in Docker container with GUI you need to run it as follows (see [original answer](https://www.mathworks.com/matlabcentral/answers/332224-is-it-possible-to-install-matlab-in-a-docker-image)):
 
     $ xhost +
@@ -33,7 +46,9 @@ To run MATLAB in Docker container with GUI you need to run it as follows (see [o
     -v ~/.Xauthority:/root/.Xauthority:ro \
     -v /dev/dri:/dev/dri:ro \
     -v /dev/shm:/dev/shm \
-    --shm-size=512M docker-image-name /usr/local/matlab/bin/matlab
+    --shm-size=512M matlab-ptv /usr/local/matlab/bin/matlab
+
+You might want to add data directories to command above via `-v` parameter.
 
 # Data processing steps
 
@@ -41,7 +56,8 @@ To run MATLAB in Docker container with GUI you need to run it as follows (see [o
 
 After starting up the MATLAB you need to add directories with compiled OpenCV and contrib plugins along with the PTV package to MATLAB PATH environment variable
 
-    addpath(ptv, opencv, opencv_contrib)
+    addpath('/matlab-ptv/', '/root/cv/opencv-3.4.1/', '/root/cv/opencv_contrib-3.4.1/')
+    mexopencvPath = '/root/cv/mexopencv/'
 
 In general case you need to do 3 processes
 
@@ -66,11 +82,10 @@ For calibration you will need to determine the time lag between left and right v
 
 After that convert recorded times into seconds from video start, in example below these times recorded into array timestamps
 
-    mexopencvPath = 'path/to/mexopencv'
     timestamps = [21 26 32]
     PTV.extractCalibrationFrames('left_camera_calibration_video.mp4', 'right_camera_calibration_video.mp4', timestamps, 'lag.mat', mexopencvPath, 'calibration_frames')
 
-### Calibration
+## Calibration
 
 Calibration is done on static frames extracted from video thus actually you don't need lag data for it but in the code it is required argument.
 30 is square size on chequerboard in mm.
