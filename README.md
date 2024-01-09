@@ -23,15 +23,15 @@ Probably you don't need all of the toolboxes, it wasn't tested thoroughly.
 
 ## Docker
 
-Currenly Dockerfile assumes that matlab installed into `matlab` directory within repo directory and should be edited otherwise.
+Currenly Dockerfile assumes that MATLAB is installed into `matlab` directory within the repo directory and should be edited otherwise.
 
 Build an image with
 
     $ docker build -t matlab-ptv .
 
 You might need superuser rights to run docker, also you can check rootless mode.
-If you need to run docker with superuser rights run it via `sudo`.
-To run MATLAB in Docker container with GUI you need to run it as follows (see [original answer](https://www.mathworks.com/matlabcentral/answers/332224-is-it-possible-to-install-matlab-in-a-docker-image)):
+If you need to run docker with superuser rights use `sudo`.
+To run MATLAB in Docker container with GUI you need to do the following (see [original answer](https://www.mathworks.com/matlabcentral/answers/332224-is-it-possible-to-install-matlab-in-a-docker-image)):
 
     $ xhost +
     $ docker run --gpus all -it --rm \
@@ -55,10 +55,10 @@ You might want to add data directories to command above via `-v` parameter.
 ## Initialization
 
 After starting up the MATLAB you need to add directories with compiled OpenCV and contrib plugins along with the PTV package to MATLAB PATH environment variable
-
-    addpath('/matlab-ptv/', '/root/cv/opencv-3.4.1/', '/root/cv/opencv_contrib-3.4.1/')
-    mexopencvPath = '/root/cv/mexopencv/'
-
+```matlab
+addpath('/matlab-ptv/', '/root/cv/opencv-3.4.1/', '/root/cv/opencv_contrib-3.4.1/')
+mexopencvPath = '/root/cv/mexopencv/'
+```
 In general case you need to do 3 processes
 
 1. System calibration
@@ -81,28 +81,29 @@ For calibration you will need to determine the time lag between left and right v
 4. Repeat from step 2
 
 After that convert recorded times into seconds from video start, in example below these times recorded into array timestamps
-
-    timestamps = [21 26 32]
-    PTV.extractCalibrationFrames('left_camera_calibration_video.mp4', 'right_camera_calibration_video.mp4', timestamps, 'lag.mat', mexopencvPath, 'calibration_frames')
-
+```matlab
+timestamps = [21 26 32]
+PTV.extractCalibrationFrames('left_camera_calibration_video.mp4', 'right_camera_calibration_video.mp4', timestamps, 'lag.mat', mexopencvPath, 'calibration_frames')
+```
 ## Calibration
 
 Calibration is done on static frames extracted from video thus actually you don't need lag data for it but in the code it is required argument.
 30 is square size on chequerboard in mm.
-
-    PTV.calibration('./calibration_frames', 30, 'path/to/lag/data/file')
-
+```matlab
+PTV.calibration('./calibration_frames', 30, 'path/to/lag/data/file')
+```
 ## Delay detection
-
-    lag = PTV.syncVideos('left_camera_videos/', 'right_camera_videos/', mexopencvPath, 'videoFileExtension', 'mp4', 'audioWindowSize', 48e3*5)
-    lag.save('lag')
-
+```matlab
+lag = PTV.syncVideos('left_camera_videos/', 'right_camera_videos/', mexopencvPath, 'videoFileExtension', 'mp4', 'audioWindowSize', 48e3*5)
+lag.save('lag')
+```
 ## Tracking
 
 Based on the example in the code but with added params to make it runnable
-
-    kalmanSettings = struct('costOfNonAssignment', 20, 'motionModel', 'ConstantVelocity', 'initialEstimateError', [200 50], 'motionNoise', [30 25], 'measurementNoise', 20);
-    matchParticlesSettings = struct('minScore', .8, 'maxAreaRatio', 1.1, 'minAreaRatio', .9, 'subFramePadding', 15, 'searchingAreaPadding', 30, 'minDepth', 50, 'maxDepth', 400);
-    blobDetectionSettings = struct('minimumBackgroundRatio', 0.4, 'minimumBlobArea', 10, 'maximumBlobArea', 200, 'maximumCount', 600);
-    trackDetectionSettings = struct('visibilityRatio', 0.6, 'ageThreshold', 8, 'invisibleForTooLong', 20);
-    PTV.track('path/to/calibration/data', 'left_camera_videos/', 'right_camera_videos/', 'path/to/lag/data/file', mexopencvPath, blobDetectionSettings, trackDetectionSettings, kalmanSettings, matchParticlesSettings, 'videoFileExtension', 'mp4', 'startingTime', 1);
+```matlab
+kalmanSettings = struct('costOfNonAssignment', 20, 'motionModel', 'ConstantVelocity', 'initialEstimateError', [200 50], 'motionNoise', [30 25], 'measurementNoise', 20);
+matchParticlesSettings = struct('minScore', .8, 'maxAreaRatio', 1.1, 'minAreaRatio', .9, 'subFramePadding', 15, 'searchingAreaPadding', 30, 'minDepth', 50, 'maxDepth', 400);
+blobDetectionSettings = struct('minimumBackgroundRatio', 0.4, 'minimumBlobArea', 10, 'maximumBlobArea', 200, 'maximumCount', 600);
+trackDetectionSettings = struct('visibilityRatio', 0.6, 'ageThreshold', 8, 'invisibleForTooLong', 20);
+PTV.track('path/to/calibration/data', 'left_camera_videos/', 'right_camera_videos/', 'path/to/lag/data/file', mexopencvPath, blobDetectionSettings, trackDetectionSettings, kalmanSettings, matchParticlesSettings, 'videoFileExtension', 'mp4', 'startingTime', 1);
+```
